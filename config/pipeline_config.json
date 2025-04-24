@@ -1,0 +1,71 @@
+{
+    "pipeline_name": "sales_analytics_pipeline",
+    "version": "1.0.0",
+    "sources": [
+        {
+            "name": "sales",
+            "type": "csv",
+            "path": "data/sales.csv",
+            "format": "csv",
+            "delimiter": ",",
+            "header": true
+        },
+        {
+            "name": "products",
+            "type": "csv",
+            "path": "data/products.csv",
+            "format": "csv",
+            "delimiter": ",",
+            "header": true
+        },
+        {
+            "name": "customers",
+            "type": "csv",
+            "path": "data/customers.csv",
+            "format": "csv",
+            "delimiter": ",",
+            "header": true
+        }
+    ],
+    "destinations": [
+        {
+            "name": "sales_table",
+            "source": "sales",
+            "type": "database",
+            "table": "sales",
+            "merge_key": "sale_id",
+            "update_type": "merge"
+        },
+        {
+            "name": "products_table",
+            "source": "products",
+            "type": "database",
+            "table": "products",
+            "merge_key": "product_id",
+            "update_type": "merge"
+        },
+        {
+            "name": "customers_table",
+            "source": "customers",
+            "type": "database",
+            "table": "customers",
+            "merge_key": "customer_id",
+            "update_type": "merge"
+        }
+    ],
+    "quality_checks": {
+        "enabled": true,
+        "threshold": 0.95,
+        "fail_on_error": false
+    },
+    "logging": {
+        "level": "INFO",
+        "format": "json",
+        "output_path": "logs/pipeline.log"
+    },
+    "settings": {
+        "batch_size": 1000,
+        "retry_attempts": 3,
+        "timeout_seconds": 3600
+    }
+}
